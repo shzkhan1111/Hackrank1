@@ -4,17 +4,7 @@ using System.Linq;
 
 namespace ConsoleApp1
 {
-    public class A
-    {
 
-    }
-    public class B : A
-    {
-
-    }
-    public class C : A
-    {
-    }
 
     class Program
     {
@@ -22,94 +12,64 @@ namespace ConsoleApp1
         {
             Console.WriteLine("Hello World!");
 
-            A a = new A();
-            B b = new B();
-            A c = new B();
-            C d = new C();
-            climbingLeaderboard(a);
-            climbingLeaderboard(b);
-            climbingLeaderboard(c);
-            climbingLeaderboard(d);
-            int[] arr = new int[1];
-            climbingLeaderboard(arr, arr);
+           
+            List<int> a = new List<int> { 3,4,5};
+            List<int> query = new List<int> { 1,2};
 
-            List<int> ranked = new List<int> { 100, 90, 90, 80 };
-            List<int> player = new List<int> { 70, 80, 105 };
-            Console.WriteLine(string.Join(", ", climbingLeaderboard(ranked, player)));
+            var x = circularArrayRotation(a, 2, query);
+            //Console.WriteLine(string.Join(", ", circularArrayRotation(a, 2,query)));
 
-            Console.ReadLine();
+            Console.ReadKey();
         }
-        public static List<int> climbingLeaderboard(List<int> ranked, List<int> player)
+        public static void rotateRight(List<int> a)
         {
-            List<int> result = new List<int>();
-            List<int> Unique = new List<int>();
-            //remove duplicates
-            for (int i = 0; i < ranked.Count(); i++)
+            int lastElement = a[a.Count() - 1];
+            for (int i = a.Count() - 1; i > 0; i--)
             {
-                if (i == 0 || ranked[i] != ranked[i - 1])
-                {
-                    Unique.Add(ranked[i]);
-                }
+                a[i] = a[i - 1];
             }
+            a[0] = lastElement;
 
-            int index = Unique.Count();
 
-            foreach (int p in player)
+        }
+        public static List<int> circularArrayRotation(List<int> a, int k, List<int> queries)
+        {
+            int count_a = a.Count();
+
+            int rem = k % (count_a);
+            List<int> res = new List<int>();
+            int sum = 0;
+            int index = 0;
+            foreach (int q in queries)
             {
-
-                if (index > 0)
+                sum = q - rem;
+                if (sum >= 0)
                 {
-                    while (index > 0 && p >= Unique[index - 1])
-                    {
-                        index--;
-                    }
-                    
-                }
-
-                if (index == 0)
-                {
-                    if (Unique[index] > p)
-                    {
-                        //second
-                        result.Add(2);
-
-                    }
-                    else
-                    {
-                        //first
-                        result.Add(1);
-                    }
+                    index = a[sum];
+                    res.Add(a[sum]);
                 }
                 else
                 {
-                    if (p < Unique[index - 1])
-                    {
-                        result.Add(index + 1);
-                    }
+                    index = count_a + sum;
+                    res.Add(a[index]);
                 }
-
-
             }
+            return res;
 
-
-            return result;
+            //rotate time out 
+            //for (int i = 0; i < k; i++)
+            //{
+            //    rotateRight(a);
+            //}
+            //List<int> res = new List<int>();
+            //foreach (int q in queries)
+            //{
+            //    res.Add(a[q]);
+            //}
 
         }
-        public static List<int> climbingLeaderboard(int[] a, int[] b)
-        {
 
-            return null;
-        }
-        public static List<int> climbingLeaderboard(A a)
-        {
 
-            return null;
-        }
-        public static List<int> climbingLeaderboard(B b)
-        {
-
-            return null;
-        }
 
     }
 }
