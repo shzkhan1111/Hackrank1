@@ -13,11 +13,11 @@ namespace ConsoleApp1
             Console.WriteLine("Hello World!");
 
            
-            List<int> a = new List<int> { 3,4,5};
+            List<int> a = new List<int> { 5,2,1,3,4};
             List<int> query = new List<int> { 1,2};
 
-            var x = circularArrayRotation(a, 2, query);
-            //Console.WriteLine(string.Join(", ", circularArrayRotation(a, 2,query)));
+            permutationEquation(a);
+            Console.WriteLine(string.Join(", ", permutationEquation(a)));
 
             Console.ReadKey();
         }
@@ -32,43 +32,21 @@ namespace ConsoleApp1
 
 
         }
-        public static List<int> circularArrayRotation(List<int> a, int k, List<int> queries)
+        public static List<int> permutationEquation(List<int> p)
         {
-            int count_a = a.Count();
-
-            int rem = k % (count_a);
             List<int> res = new List<int>();
-            int sum = 0;
-            int index = 0;
-            foreach (int q in queries)
+
+            for (int i = 0; i < p.Count(); i++)
             {
-                sum = q - rem;
-                if (sum >= 0)
-                {
-                    index = a[sum];
-                    res.Add(a[sum]);
-                }
-                else
-                {
-                    index = count_a + sum;
-                    res.Add(a[index]);
-                }
+                int index1 = p.IndexOf(i + 1) + 1;//POS 1 
+                int index2 = p.IndexOf(index1) + 1;//POS 2
+                
+
+                res.Add(index2);
             }
             return res;
 
-            //rotate time out 
-            //for (int i = 0; i < k; i++)
-            //{
-            //    rotateRight(a);
-            //}
-            //List<int> res = new List<int>();
-            //foreach (int q in queries)
-            //{
-            //    res.Add(a[q]);
-            //}
-
         }
-
 
 
     }
