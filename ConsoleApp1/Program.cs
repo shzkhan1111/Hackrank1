@@ -16,14 +16,14 @@ namespace ConsoleApp1
 
 
             //List<int> a = new List<int> { 5,2,1,3,4};
-            //List<int> query = new List<int> { 1,2};
-            int[] c = new int[] { 0, 0, 1, 0 };
+            //int[] c = new int[] { 5,4,4,2,2,8};
 
             //var x = jumpingOnClouds(c , 2);
             //Console.WriteLine(string.Join(", ", permutationEquation(a)));
             //Console.WriteLine(appendAndDelete("y", "yu", 2));
 
-            var x = libraryFine(2,7,1014,1,1,1015);
+            List<int> query = new List<int> { 5, 4, 4, 2, 2, 8 };
+            var x = cutTheSticks(query);
             Console.WriteLine(x);
             Console.ReadKey();
         }
@@ -36,24 +36,71 @@ namespace ConsoleApp1
         //    c =  y - x + 1;
         //    return c;
         //}
-        public static int libraryFine(int d1, int m1, int y1, int d2, int m2, int y2)
+
+        //public static int getMin(List<int> arr)
+        //{
+        //    if (arr.Count >= 0)
+        //    {
+        //        int min = arr[0];
+        //        for (int i = 1; i < arr.Count(); i++)
+        //        {
+        //            if (min > arr[i] )
+        //            {
+        //                min = arr[i];
+        //            }
+        //        }
+        //        return min;
+        //    }
+        //    else
+        //    {
+        //        return 0;
+        //    }
+
+        //}
+        public static void sort(List<int> arr)
         {
-            if (y1 > y2)
+            for (int i = 0; i < arr.Count(); i++)
             {
-                return (y1 - y2) * 10000;
+                for (int j = i; j < arr.Count(); j++)
+                {
+                    if (arr[i] > arr[j])
+                    {
+                        arr[i] = arr[i] + arr[j];
+                        arr[j] = arr[i] - arr[j];
+                        arr[i] = arr[i] - arr[j];
+                    }
+                }
             }
-            else if (y1 == y2 && m1 > m2)
+        }
+        public static List<int> cutTheSticks(List<int> arr)
+        {
+            List<int> res = new List<int>();
+            sort(arr);
+            int index = 0;
+            int min = 0;
+            int removed = 0;
+            int count = arr.Count();
+            res.Add(count);
+            while (index < count)
             {
-                return (m1 - m2) * 500;
+                min = arr[index];
+                for (int i = index; i < count; i++)
+                {
+                    arr[i] = arr[i] - min;
+                    if (arr[i] == 0)
+                    {
+                        removed++;
+                    }
+                }
+                int x = count - removed;
+                if (x > 0)
+                {
+                    res.Add(x);
+                }
+                index = removed;
             }
-            else if (y1 == y2 && m1 == m2 && d1 > d2)
-            {
-                return (d1 - d2) * 15;
-            }
-            else
-            {
-                return 0;
-            }
+
+            return res;
         }
 
 
