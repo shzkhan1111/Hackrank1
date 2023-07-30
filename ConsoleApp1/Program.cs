@@ -21,58 +21,25 @@ namespace ConsoleApp1
 
             //var x = jumpingOnClouds(c , 2);
             //Console.WriteLine(string.Join(", ", permutationEquation(a)));
-            Console.WriteLine(appendAndDelete("y", "yu", 2));
+            //Console.WriteLine(appendAndDelete("y", "yu", 2));
 
-
+            var x = squares(24, 49);
+            Console.WriteLine(x);
             Console.ReadKey();
         }
-        public static string appendAndDelete(string s, string t, int k)
+        public static int squares(int a, int b)
         {
             int c = 0;
-            while (s[c] == t[c])
+            for (int i = a; i <= b; i++ )
             {
-                c++;
-                if (c >= s.Length || c >= t.Length)
+                double number = Math.Sqrt(i);
+                //var temp = number % 1;
+                if(number % 1 ==0)
                 {
-                    break;
+                    c++;
                 }
             }
-            int lenToRm = s.Length - c;
-            int lenToAdd = t.Length - c;
-            int cost = lenToRm + lenToAdd;
-            int sum = cost - k;
-
-            if (sum == 0)
-            {
-                return "Yes";
-            }
-            else if (sum > 0)
-            {
-                //cost higher than k
-                return "No";
-            }
-            else
-            {
-                int opr = Math.Abs(sum);
-                int totalStringLen = s.Length + t.Length;
-                if (k >= totalStringLen)
-                {
-                    return "Yes";
-                }
-                else if (opr %2 == 0)
-                {
-                    return "Yes";
-                }
-                else
-                {
-                    return "No";
-                }
-            }
-
-
-
-
-
+            return c;
         }
 
 
