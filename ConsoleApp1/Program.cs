@@ -23,18 +23,37 @@ namespace ConsoleApp1
             //Console.WriteLine(string.Join(", ", permutationEquation(a)));
             //Console.WriteLine(appendAndDelete("y", "yu", 2));
 
-            var x = squares(24, 49);
+            var x = libraryFine(2,7,1014,1,1,1015);
             Console.WriteLine(x);
             Console.ReadKey();
         }
-        public static int squares(int a, int b)
-        {
-            int c = 0;
-            int x =(int) Math.Ceiling(Math.Sqrt(a));
-            int y = (int)Math.Floor(Math.Sqrt(b));
+        //public static int squares(int a, int b)
+        //{
+        //    int c = 0;
+        //    int x =(int) Math.Ceiling(Math.Sqrt(a));
+        //    int y = (int)Math.Floor(Math.Sqrt(b));
 
-            c =  y - x + 1;
-            return c;
+        //    c =  y - x + 1;
+        //    return c;
+        //}
+        public static int libraryFine(int d1, int m1, int y1, int d2, int m2, int y2)
+        {
+            if (y1 > y2)
+            {
+                return (y1 - y2) * 10000;
+            }
+            else if (y1 == y2 && m1 > m2)
+            {
+                return (m1 - m2) * 500;
+            }
+            else if (y1 == y2 && m1 == m2 && d1 > d2)
+            {
+                return (d1 - d2) * 15;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
 
