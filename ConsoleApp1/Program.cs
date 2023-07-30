@@ -30,15 +30,10 @@ namespace ConsoleApp1
         public static int squares(int a, int b)
         {
             int c = 0;
-            for (int i = a; i <= b; i++ )
-            {
-                double number = Math.Sqrt(i);
-                //var temp = number % 1;
-                if(number % 1 ==0)
-                {
-                    c++;
-                }
-            }
+            int x =(int) Math.Ceiling(Math.Sqrt(a));
+            int y = (int)Math.Floor(Math.Sqrt(b));
+
+            c =  y - x + 1;
             return c;
         }
 
