@@ -22,87 +22,76 @@ namespace ConsoleApp1
             //Console.WriteLine(string.Join(", ", permutationEquation(a)));
             //Console.WriteLine(appendAndDelete("y", "yu", 2));
 
-            List<int> query = new List<int> { 5, 4, 4, 2, 2, 8 };
-            var x = cutTheSticks(query);
-            Console.WriteLine(x);
+            List<int> query = new List<int> { 19 , 10 , 12 ,10 ,24 , 25, 22};
+            Console.WriteLine(nonDivisibleSubset(4 , query).ToString());
             Console.ReadKey();
         }
-        //public static int squares(int a, int b)
-        //{
-        //    int c = 0;
-        //    int x =(int) Math.Ceiling(Math.Sqrt(a));
-        //    int y = (int)Math.Floor(Math.Sqrt(b));
 
-        //    c =  y - x + 1;
-        //    return c;
-        //}
-
-        //public static int getMin(List<int> arr)
-        //{
-        //    if (arr.Count >= 0)
-        //    {
-        //        int min = arr[0];
-        //        for (int i = 1; i < arr.Count(); i++)
-        //        {
-        //            if (min > arr[i] )
-        //            {
-        //                min = arr[i];
-        //            }
-        //        }
-        //        return min;
-        //    }
-        //    else
-        //    {
-        //        return 0;
-        //    }
-
-        //}
-        public static void sort(List<int> arr)
+        public static int nonDivisibleSubset(int k, List<int> s)
         {
-            for (int i = 0; i < arr.Count(); i++)
+            Dictionary<int,int> d = new Dictionary<int,int>();
+            int counter = 0;
+            foreach (int p in s)
             {
-                for (int j = i; j < arr.Count(); j++)
+                int x = p % k;
+                if (d.ContainsKey(x))
                 {
-                    if (arr[i] > arr[j])
-                    {
-                        arr[i] = arr[i] + arr[j];
-                        arr[j] = arr[i] - arr[j];
-                        arr[i] = arr[i] - arr[j];
-                    }
+                    d[x]++;
+                }
+                else
+                {
+                    d.Add(x, 1);
                 }
             }
-        }
-        public static List<int> cutTheSticks(List<int> arr)
-        {
-            List<int> res = new List<int>();
-            sort(arr);
-            int index = 0;
-            int min = 0;
-            int removed = 0;
-            int count = arr.Count();
-            res.Add(count);
-            while (index < count)
+
+            if (d.ContainsKey(0))
             {
-                min = arr[index];
-                for (int i = index; i < count; i++)
+                counter++;
+            }
+            int te = 0 , s1 = 0, s2 = 0;
+            for (int i = 1; i <= k/2; i++)
+            {
+                te = k - i;
+                if (te == i)
                 {
-                    arr[i] = arr[i] - min;
-                    if (arr[i] == 0)
+                    if (d.TryGetValue(i, out s1))
                     {
-                        removed++;
+                        counter++;
                     }
+                    else
+                    {
+                        
+                    }
+
                 }
-                int x = count - removed;
-                if (x > 0)
-                {
-                    res.Add(x);
+                else {
+                    if (d.TryGetValue(i, out s1))
+                    {
+
+                    }
+                    else
+                    {
+                        s1 = 0;
+                    }
+
+                    if (d.TryGetValue(te, out s2))
+                    {
+
+                    }
+                    else
+                    {
+                        s2 = 0;
+                    }
+
+                    int max = s1 >= s2 ? s1 : s2;
+                    counter += max;
+
                 }
-                index = removed;
+
             }
 
-            return res;
+            return counter;
         }
-
 
     }
 }
