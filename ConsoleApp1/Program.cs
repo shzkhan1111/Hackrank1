@@ -23,74 +23,42 @@ namespace ConsoleApp1
             //Console.WriteLine(appendAndDelete("y", "yu", 2));
 
             List<int> query = new List<int> { 19 , 10 , 12 ,10 ,24 , 25, 22};
-            Console.WriteLine(nonDivisibleSubset(4 , query).ToString());
+            Console.WriteLine(repeatedString("a" , 1000000000000).ToString());
             Console.ReadKey();
         }
 
-        public static int nonDivisibleSubset(int k, List<int> s)
+        public static int findA(string s, long n)
         {
-            Dictionary<int,int> d = new Dictionary<int,int>();
-            int counter = 0;
-            foreach (int p in s)
+            int c = 0;
+            for (int i = 0; i < (int) n; i++)
             {
-                int x = p % k;
-                if (d.ContainsKey(x))
+                if (s[i] == 'a')
                 {
-                    d[x]++;
-                }
-                else
-                {
-                    d.Add(x, 1);
+                    c++;
                 }
             }
-
-            if (d.ContainsKey(0))
+            return c;
+        }
+        public static long repeatedString(string s, long n)
+        {
+            long res = 0;
+            string subs = "";
+            if (s.Length >= n)
             {
-                counter++;
+                subs = s.Substring(0, (int)n);
+                int x = findA(s, n);
+                return x;
             }
-            int te = 0 , s1 = 0, s2 = 0;
-            for (int i = 1; i <= k/2; i++)
+            else
             {
-                te = k - i;
-                if (te == i)
-                {
-                    if (d.TryGetValue(i, out s1))
-                    {
-                        counter++;
-                    }
-                    else
-                    {
-                        
-                    }
+                int a = findA(s, s.Length);
+                long rem = n %  s.Length;
+                int b = findA(s, rem);
 
-                }
-                else {
-                    if (d.TryGetValue(i, out s1))
-                    {
-
-                    }
-                    else
-                    {
-                        s1 = 0;
-                    }
-
-                    if (d.TryGetValue(te, out s2))
-                    {
-
-                    }
-                    else
-                    {
-                        s2 = 0;
-                    }
-
-                    int max = s1 >= s2 ? s1 : s2;
-                    counter += max;
-
-                }
-
+                double times = Math.Floor((double)n / (long)s.Length);
+                return a * (long)times + b;
+                //get string count org
             }
-
-            return counter;
         }
 
     }
