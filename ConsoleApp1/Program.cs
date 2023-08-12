@@ -29,20 +29,40 @@ namespace ConsoleApp1
             //obs.Add(new List<int> { 4, 2 });
             //obs.Add(new List<int> { 2, 3 });
             List<string> query = new List<string> { "10101", "11110", "00010" };
-            var dd = taumBday(95677, 39394, 86983, 311224, 311224);
+            var dd = encryption("chillout");
             Console.WriteLine(dd.ToString());
             //Console.WriteLine(dd[1].ToString());
 
             Console.ReadKey();
         }
 
-        public static long taumBday(int b, int w, int bc, int wc, int z)
+        public static string encryption(string s)
         {
-            long blackCost = Math.Min(bc, wc + z);
-            long whiteCost = Math.Min(wc, bc + z);
+            int length = s.Length;
+            var row = (int) Math.Floor(Math.Sqrt(length));
+            var col = (int) Math.Ceiling(Math.Sqrt(length));
+            int st = 0;
+            char temp = new char();
+            string res = "";
+            for (int j = 0; j < col; j++)
+            {
+                st = j;
+                for (int i = 0; i < col; i++)
+                {
+                    if (st < length)
+                    {
+                        temp = s[st];
+                        res = res + temp;
+                    }
+                    st = st + col;
+                }
+                res = res + ' ';
+            }
 
-            return (long)b * blackCost + (long)w * whiteCost;
+            res = res.Substring(0,res.Length - 1);
+            return res;
         }
+
 
 
 
