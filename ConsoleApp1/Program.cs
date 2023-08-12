@@ -29,40 +29,58 @@ namespace ConsoleApp1
             //obs.Add(new List<int> { 4, 2 });
             //obs.Add(new List<int> { 2, 3 });
             List<string> query = new List<string> { "10101", "11110", "00010" };
-            var dd = encryption("chillout");
+            var dd = minimumDistances(new List<int> { 1,1});
             Console.WriteLine(dd.ToString());
             //Console.WriteLine(dd[1].ToString());
 
             Console.ReadKey();
         }
 
-        public static string encryption(string s)
+        public static int minimumDistances(List<int> a)
         {
-            int length = s.Length;
-            var row = (int) Math.Floor(Math.Sqrt(length));
-            var col = (int) Math.Ceiling(Math.Sqrt(length));
-            int st = 0;
-            char temp = new char();
-            string res = "";
-            for (int j = 0; j < col; j++)
+            var dic = new Dictionary<int, List<int>>();
+            int c = 1;
+            foreach (int n in a)
             {
-                st = j;
-                for (int i = 0; i < col; i++)
+                if (dic.ContainsKey(n))
                 {
-                    if (st < length)
+                    if (dic[n][0] == 0)
                     {
-                        temp = s[st];
-                        res = res + temp;
+                        dic[n][0] = c;
                     }
-                    st = st + col;
+                    else if (dic[n][1] == 0)
+                    {
+                        dic[n][1] = c;
+                    }
                 }
-                res = res + ' ';
+                else
+                {
+                    dic.Add(n, new List<int> { c, 0 });
+                }
+
+
+                c++;
             }
 
-            res = res.Substring(0,res.Length - 1);
-            return res;
-        }
+            int min = int.MaxValue;
+            int sub = 0;
+            bool flag = false;
+            foreach (var x in dic)
+            {
+                if (x.Value[1] != 0)
+                {
+                    sub = x.Value[1] - x.Value[0];
+                    if (sub < min)
+                    {
+                        min = sub;
+                        flag = true;
+                    }
+                }
+            }
+            min = flag ? min : -1;
 
+            return min;
+        }
 
 
 
