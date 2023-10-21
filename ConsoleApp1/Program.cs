@@ -15,41 +15,65 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Generate(5);
+            //var grid = new List<List<char>> {
+            //      new List<char> { '1', '1', '1', '1', '0' },
+            //      new List<char> { '1', '1', '0', '1', '0' },
+            //      new List<char> { '1', '1', '0', '0', '0' },
+            //      new List<char> { '0', '0', '0', '0', '0' }
+            //    };
+            char[][] grid = new char[][] {
+              new char[] { '1', '1', '1', '1', '0' },
+              new char[] { '1', '1', '0', '1', '0' },
+              new char[] { '1', '1', '0', '0', '0' },
+              new char[] { '0', '0', '0', '0', '1' }
+              };
+            NumIslands(grid);
             Console.ReadKey();
         }
 
-        public static IList<IList<int>> Generate(int numRows)
+        public static int NumIslands(char[][] grid)
         {
-            IList<IList<int>> res = new List<IList<int>>();
-            List<int> row = new List<int>();
-            List<int> prow = new List<int>();
-
-            if (numRows == 0) return res;
-
-            row.Add(1);
-            res.Add(row);
-            for (int i = 1;i<numRows;i++)
+            int c = 0;
+            for (int i = 0; i < grid.Length; i++)
             {
-                prow = row;
-                row = new List<int>();
-                for (int j = 0; j <= i;j++)
+                for (int j = 0; j < grid[i].Length; j++)
                 {
-                    if (j == 0 || j == i)
+                    if (grid[i][j] == '1')
                     {
-                        row.Add(1);    
+                        //turn it into 0 and see if there  is 1 near by and turn those into 0
+                        c++;
+                        convertTo0(grid, i, j);
                     }
-                    else
-                    {
-                        int n = prow[j - 1] + prow[j];
-                        row.Add(n);
-                    }   
                 }
-                res.Add(row);
             }
 
-            return res;
+            return c;
+
         }
+
+        public static void convertTo0(char[][] grid, int i, int j)
+        {
+            if (i >= grid.Length || i < 0)
+            {
+                return;
+            }
+            if (grid[i].Length <= j || j < 0)
+            {
+                return;
+            }
+            if (grid[i][j] == '0')
+            {
+                return;
+            }
+
+            grid[i][j] = '0';
+            convertTo0(grid, i + 1, j);
+            convertTo0(grid, i - 1, j);
+            convertTo0(grid, i, j + 1);
+            convertTo0(grid, i, j - 1);
+        }
+
+
 
 
 
