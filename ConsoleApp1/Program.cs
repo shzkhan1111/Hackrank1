@@ -1,5 +1,6 @@
 ﻿using LanguageExt;
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -14,66 +15,45 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            //testing
-            int u = 10;
-            List<int> list = new List<int>();
-            list.Add(u);
-
-            List<List<int>> llist = new List<List<int>>();
-            llist.Add(list);
-            for (int i = 0; i < 4; i++)
-            {
-                list = new List<int>();
-                list.Add(i + u);
-                llist.Add(list);
-            }
-
-            List<Something> slist = new List<Something>();
-            List<List<Something>> sllist = new List<List<Something>>();
-
-            Something s = new Something();
-            slist.Add(s);
-
-            s.x = 10;
-            s.y = 10;
-            for (int i = 0; i < 4; i++)
-            {
-                slist = new List<Something>();
-                slist.Add(s);   
-                sllist.Add(slist);
-                s.x = i;
-                s.y = i;
-            }
-
-            List<Something> slist1 = new List<Something>();
-            List<List<Something>> sllist1 = new List<List<Something>>();
-
-            Something s1 = new Something();
-
-            for (int i = 0; i < 4; i++)
-            {
-                slist = new List<Something>();
-                slist.Add(new Something
-                {
-                    x = i,  y= i
-                });
-                sllist.Add(slist);
-                s.x = i;
-                s.y = i;
-            }
+            Generate(5);
             Console.ReadKey();
-
-
         }
 
-        public class Something
+        public static IList<IList<int>> Generate(int numRows)
         {
-            public int x;
-            public int y { get; set; }
+            IList<IList<int>> res = new List<IList<int>>();
+            List<int> row = new List<int>();
+            List<int> prow = new List<int>();
+
+            if (numRows == 0) return res;
+
+            row.Add(1);
+            res.Add(row);
+            for (int i = 1;i<numRows;i++)
+            {
+                prow = row;
+                row = new List<int>();
+                for (int j = 0; j <= i;j++)
+                {
+                    if (j == 0 || j == i)
+                    {
+                        row.Add(1);    
+                    }
+                    else
+                    {
+                        int n = prow[j - 1] + prow[j];
+                        row.Add(n);
+                    }   
+                }
+                res.Add(row);
+            }
+
+            return res;
         }
 
 
-       
+
+
 
 
 
