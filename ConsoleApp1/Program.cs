@@ -1,6 +1,8 @@
 ﻿using LanguageExt;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 
@@ -12,75 +14,66 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            //testing
+            int u = 10;
+            List<int> list = new List<int>();
+            list.Add(u);
 
+            List<List<int>> llist = new List<List<int>>();
+            llist.Add(list);
+            for (int i = 0; i < 4; i++)
+            {
+                list = new List<int>();
+                list.Add(i + u);
+                llist.Add(list);
+            }
 
-            //List<int> a = new List<int> { 5,2,1,3,4};
-            //int[] c = new int[] { 5,4,4,2,2,8};
+            List<Something> slist = new List<Something>();
+            List<List<Something>> sllist = new List<List<Something>>();
 
-            //var x = jumpingOnClouds(c , 2);
-            //Console.WriteLine(string.Join(", ", permutationEquation(a)));
-            //Console.WriteLine(appendAndDelete("y", "yu", 2));
+            Something s = new Something();
+            slist.Add(s);
 
-            //List<int> query = new List<int> { 1,2,2,3};
-            //List<List<int>> obs = new List<List<int>>();
+            s.x = 10;
+            s.y = 10;
+            for (int i = 0; i < 4; i++)
+            {
+                slist = new List<Something>();
+                slist.Add(s);   
+                sllist.Add(slist);
+                s.x = i;
+                s.y = i;
+            }
 
-            //obs.Add(new List<int> { 5, 5 });
-            //obs.Add(new List<int> { 4, 2 });
-            //obs.Add(new List<int> { 2, 3 });
-            List<string> query = new List<string> { "10101", "11110", "00010" };
-            var dd = minimumDistances(new List<int> { 1,1});
-            Console.WriteLine(dd.ToString());
-            //Console.WriteLine(dd[1].ToString());
+            List<Something> slist1 = new List<Something>();
+            List<List<Something>> sllist1 = new List<List<Something>>();
 
+            Something s1 = new Something();
+
+            for (int i = 0; i < 4; i++)
+            {
+                slist = new List<Something>();
+                slist.Add(new Something
+                {
+                    x = i,  y= i
+                });
+                sllist.Add(slist);
+                s.x = i;
+                s.y = i;
+            }
             Console.ReadKey();
+
+
         }
 
-        public static int minimumDistances(List<int> a)
+        public class Something
         {
-            var dic = new Dictionary<int, List<int>>();
-            int c = 1;
-            foreach (int n in a)
-            {
-                if (dic.ContainsKey(n))
-                {
-                    if (dic[n][0] == 0)
-                    {
-                        dic[n][0] = c;
-                    }
-                    else if (dic[n][1] == 0)
-                    {
-                        dic[n][1] = c;
-                    }
-                }
-                else
-                {
-                    dic.Add(n, new List<int> { c, 0 });
-                }
-
-
-                c++;
-            }
-
-            int min = int.MaxValue;
-            int sub = 0;
-            bool flag = false;
-            foreach (var x in dic)
-            {
-                if (x.Value[1] != 0)
-                {
-                    sub = x.Value[1] - x.Value[0];
-                    if (sub < min)
-                    {
-                        min = sub;
-                        flag = true;
-                    }
-                }
-            }
-            min = flag ? min : -1;
-
-            return min;
+            public int x;
+            public int y { get; set; }
         }
+
+
+       
 
 
 
