@@ -16,24 +16,37 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             int[] num = new int[] { 1, 2, 3, 1 };
-            ContainsDuplicate(num);
+            ListNode head = new ListNode(1);
+            head.next = new ListNode(2);
+            head.next.next = new ListNode(3);
+            head.next.next.next = new ListNode(4);
+            head.next.next.next.next = new ListNode(5);
+            ReverseList(head);
             Console.ReadKey();
         }
-        public static bool ContainsDuplicate(int[] nums)
+        /** Definition for singly-linked list.*/
+        public static ListNode ReverseList(ListNode head)
         {
-            System.Collections.Generic.HashSet<int> set = new System.Collections.Generic.HashSet<int>();
-            for (int i = 0;i < nums.Length;i++)
+            ListNode p = null;
+            while (head != null)
             {
-                if (set.Contains(nums[i]))
-                {
-                    return true;
-                }
-                set.Add(nums[i]);
+                ListNode temp = head.next;
+                head.next = p;
+                p = head;
+                head = temp;
+                 
             }
-
-            return false;
+           return p;
         }
-
+        public class ListNode {
+           public int val;
+           public ListNode next;
+           public ListNode(int val=0, ListNode next=null) {
+               this.val = val;
+               this.next = next;
+           }
+       }
+      
 
 
 
