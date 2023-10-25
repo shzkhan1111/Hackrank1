@@ -15,38 +15,39 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            int[] num = new int[] { 1, 2, 3, 1 };
-            ListNode head = new ListNode(1);
-            head.next = new ListNode(2);
-            head.next.next = new ListNode(3);
-            head.next.next.next = new ListNode(4);
-            head.next.next.next.next = new ListNode(5);
-            ReverseList(head);
+
+            int[] n = new int[] { 2, 7, 11 };
+            TwoSum(n, 9);
             Console.ReadKey();
         }
-        /** Definition for singly-linked list.*/
-        public static ListNode ReverseList(ListNode head)
+
+        public static int[] TwoSum(int[] numbers, int target)
         {
-            ListNode p = null;
-            while (head != null)
+            int [] result = new int[2];
+            int p1 = 0, p2 = numbers.Length - 1;
+            int s = 0;
+
+            while (p1 < p2)
             {
-                ListNode temp = head.next;
-                head.next = p;
-                p = head;
-                head = temp;
-                 
+                s = numbers[p2] + numbers[p1];
+                if (s > target)
+                {
+                    p2--;
+                }
+                else if (s < target)
+                {
+                    p1++;
+                }
+                else if (s == target)
+                {
+                    result[0] = p1+1;
+                    result[1] = p2+1;
+                    return result;
+                }
+
             }
-           return p;
+            return result;
         }
-        public class ListNode {
-           public int val;
-           public ListNode next;
-           public ListNode(int val=0, ListNode next=null) {
-               this.val = val;
-               this.next = next;
-           }
-       }
-      
 
 
 
