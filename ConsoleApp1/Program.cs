@@ -1,4 +1,5 @@
 ﻿using LanguageExt;
+using LanguageExt.Pretty;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -16,38 +17,83 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
 
-            int[] n = new int[] { 2, 7, 11 };
-            TwoSum(n, 9);
+            var list = new List<int?> { 1, null, 3, 2, 4, null, 5, 6 };
+            var root = InitializeNaryTree(list);
+            var res = Postorder(root);
+
             Console.ReadKey();
         }
-
-        public static int[] TwoSum(int[] numbers, int target)
+        public static IList<int> Postorder(Node root)
         {
-            int [] result = new int[2];
-            int p1 = 0, p2 = numbers.Length - 1;
-            int s = 0;
-
-            while (p1 < p2)
+            List<int> outArray = new List<int>();
+            Stack<Node> stack = new Stack<Node>();
+            Node t = new Node();
+            if (root == null)
             {
-                s = numbers[p2] + numbers[p1];
-                if (s > target)
+                return outArray;
+            }
+            stack.Push(root);
+            while (stack.Any())
+            {
+                t = stack.Pop();
+                for(int i = 0; i < t.children.Count; i++)
                 {
-                    p2--;
+                    stack.Push(t.children[i]);
                 }
-                else if (s < target)
+                outArray.Insert(0 , t.val);
+            }
+            return outArray;
+
+        }
+        public static Node InitializeNaryTree(List<int?> list)
+            {
+                Node root = new Node();
+                Node temp = new Node();
+                Queue<Node> q = new Queue<Node>();
+                root.val = list[0].Value;
+                q.Enqueue(root);
+                for (int i = 1; i < list.Length(); i++)
                 {
-                    p1++;
+                    //temp = q.Peek();
+                    if (list[i] == null)
+                    {
+                        //fill the next node
+                        temp = q.Dequeue();
+                    }
+                    else
+                    {
+                        Node node = new Node(list[i].Value);
+                        q.Enqueue(node);
+                        temp.children.Add(node);
+                    }
                 }
-                else if (s == target)
-                {
-                    result[0] = p1+1;
-                    result[1] = p2+1;
-                    return result;
-                }
+
+            return root;
 
             }
-            return result;
+
+        public class Node
+        {
+            public int val;
+            public IList<Node> children;
+
+            public Node() {
+                children = new List<Node>();
+            }
+
+            public Node(int _val)
+            {
+                val = _val;
+                children = new List<Node>();    
+            }
+
+            public Node(int _val, IList<Node> _children)
+            {
+                val = _val;
+                children = _children;
+            }
         }
+
 
 
 
