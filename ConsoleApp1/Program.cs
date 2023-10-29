@@ -20,8 +20,8 @@ namespace ConsoleApp1
             var list = new int?[] { 1, null, 3, 2 };
             //var root = InitializeNaryTree(list);
             //var res = Postorder(root);
-            var t = new Tree(list);
-            var x = t.root;
+            var t = InitializeTree(list);
+            var x = t;
 
             Console.ReadKey();
         }
@@ -40,68 +40,40 @@ namespace ConsoleApp1
                 this.right = right;
             }
         }
-        public class Tree
+        static TreeNode InitializeTree(int? [] inputList)
         {
-            public TreeNode root;
-
-            public Tree(int?[] input)
+            if (inputList.Length == 0)
             {
-                root = InitializeTree(input);
+                return null;
             }
 
-            public TreeNode InitializeTree(int?[] inputList)
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            TreeNode root = new TreeNode(inputList[0].Value);
+            queue.Enqueue(root);
+
+            int i = 1;
+            while (queue.Count > 0 && i < inputList.Length)
             {
-                if (inputList.Length == 0)
+                TreeNode currentNode = queue.Dequeue();
+
+                if (inputList[i] != null)
                 {
-                    return null;
+                    currentNode.left = new TreeNode(inputList[i].Value);
+                    queue.Enqueue(currentNode.left);
                 }
 
-                Queue<TreeNode> queue = new Queue<TreeNode>();
-                TreeNode root = new TreeNode(inputList[0].Value);
-                queue.Enqueue(root);
+                i++;
 
-                int i = 1;
-                while (queue.Count > 0 && i < inputList.Length)
+                if (i < inputList.Length && inputList[i] != null)
                 {
-                    TreeNode currentNode = queue.Dequeue();
-                    if (inputList[i] == null)
-                    {
-                        i++;
-                    }
-                    if (inputList[i] != null)
-                    {
-                        currentNode.left = new TreeNode(inputList[i].Value);
-                        queue.Enqueue(currentNode.left);
-                    }
-
-                    i++;
-
-                    if (i < inputList.Length && inputList[i] != null)
-                    {
-                        currentNode.right = new TreeNode(inputList[i].Value);
-                        queue.Enqueue(currentNode.right);
-                    }
-
-                    i++;
+                    currentNode.right = new TreeNode(inputList[i].Value);
+                    queue.Enqueue(currentNode.right);
                 }
 
-                return root;
+                i++;
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            return root;
         }
     }
     }
