@@ -17,82 +17,76 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
 
-            var list = new List<int?> { 1, null, 3, 2, 4, null, 5, 6 };
-            var root = InitializeNaryTree(list);
-            var res = Postorder(root);
+            var list = new int?[] { 1, null, 3, 2 };
+            //var root = InitializeNaryTree(list);
+            //var res = Postorder(root);
+            var t = new Tree(list);
+            var x = t.root;
 
             Console.ReadKey();
         }
-        public static IList<int> Postorder(Node root)
-        {
-            List<int> outArray = new List<int>();
-            Stack<Node> stack = new Stack<Node>();
-            Node t = new Node();
-            if (root == null)
-            {
-                return outArray;
-            }
-            stack.Push(root);
-            while (stack.Any())
-            {
-                t = stack.Pop();
-                for(int i = 0; i < t.children.Count; i++)
-                {
-                    stack.Push(t.children[i]);
-                }
-                outArray.Insert(0 , t.val);
-            }
-            return outArray;
 
-        }
-        public static Node InitializeNaryTree(List<int?> list)
-            {
-                Node root = new Node();
-                Node temp = new Node();
-                Queue<Node> q = new Queue<Node>();
-                root.val = list[0].Value;
-                q.Enqueue(root);
-                for (int i = 1; i < list.Length(); i++)
-                {
-                    //temp = q.Peek();
-                    if (list[i] == null)
-                    {
-                        //fill the next node
-                        temp = q.Dequeue();
-                    }
-                    else
-                    {
-                        Node node = new Node(list[i].Value);
-                        q.Enqueue(node);
-                        temp.children.Add(node);
-                    }
-                }
 
-            return root;
-
-            }
-
-        public class Node
+        public class TreeNode
         {
             public int val;
-            public IList<Node> children;
+            public TreeNode left;
+            public TreeNode right;
 
-            public Node() {
-                children = new List<Node>();
-            }
-
-            public Node(int _val)
+            public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
             {
-                val = _val;
-                children = new List<Node>();    
-            }
-
-            public Node(int _val, IList<Node> _children)
-            {
-                val = _val;
-                children = _children;
+                this.val = val;
+                this.left = left;
+                this.right = right;
             }
         }
+        public class Tree
+        {
+            public TreeNode root;
+
+            public Tree(int?[] input)
+            {
+                root = InitializeTree(input);
+            }
+
+            public TreeNode InitializeTree(int?[] inputList)
+            {
+                if (inputList.Length == 0)
+                {
+                    return null;
+                }
+
+                Queue<TreeNode> queue = new Queue<TreeNode>();
+                TreeNode root = new TreeNode(inputList[0].Value);
+                queue.Enqueue(root);
+
+                int i = 1;
+                while (queue.Count > 0 && i < inputList.Length)
+                {
+                    TreeNode currentNode = queue.Dequeue();
+                    if (inputList[i] == null)
+                    {
+                        i++;
+                    }
+                    if (inputList[i] != null)
+                    {
+                        currentNode.left = new TreeNode(inputList[i].Value);
+                        queue.Enqueue(currentNode.left);
+                    }
+
+                    i++;
+
+                    if (i < inputList.Length && inputList[i] != null)
+                    {
+                        currentNode.right = new TreeNode(inputList[i].Value);
+                        queue.Enqueue(currentNode.right);
+                    }
+
+                    i++;
+                }
+
+                return root;
+            }
 
 
 
@@ -105,5 +99,9 @@ namespace ConsoleApp1
 
 
 
+
+
+
+        }
     }
-}
+    }
