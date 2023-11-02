@@ -17,18 +17,39 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
 
-            var list1 = new int?[] { 1, null, 3, 2 ,null , 5};
-            var list2 = new int?[] { 1, null, 3, 2, null, 5 };
+            var list1 = new int?[] { 4, null, 2, 7 ,null , 1 , 3 , null , 6 , 9};
+            //var list2 = new int?[] { 1, null, 3, 2, null, 5 };
 
             //var root = InitializeNaryTree(list);
             //var res = Postorder(root);
-            var t1 = InitializeTree(list1);
-            var t2 = InitializeTree(list2);
+            //var t1 = InitializeTree(list1);
+            //var t2 = InitializeTree(list2);
+            var t2 = InitializeTree(list1);
 
-            MergeTrees(t1 , t2);    
+            InvertTree(t2); 
+
+            //MergeTrees(t1 , t2);    
+
             //var x = t;
 
             Console.ReadKey();
+        }
+
+
+        public static TreeNode InvertTree(TreeNode root)
+        {
+            if (root == null)
+            {
+                return root;
+            }
+            
+            var left = InvertTree(root.left);   
+            var rig = InvertTree(root.right);
+            root.left = rig;
+            root.right = left;
+
+            return root;
+
         }
 
         public static TreeNode MergeTrees(TreeNode root1, TreeNode root2)
