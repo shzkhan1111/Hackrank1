@@ -24,18 +24,40 @@ namespace ConsoleApp1
             //var res = Postorder(root);
             //var t1 = InitializeTree(list1);
             //var t2 = InitializeTree(list2);
-            var t2 = InitializeTree(list1);
+            //var t2 = InitializeTree(list1);
 
-            InvertTree(t2); 
+            //InvertTree(t2); 
 
             //MergeTrees(t1 , t2);    
 
             //var x = t;
-
+            IsPalindrome(1234);
             Console.ReadKey();
         }
 
+        public static bool IsPalindrome(int x)
+        {
+            if (x < 0 || x % 10 == 0)
+            {
+                return false;
+            }
+            if (x > 0 && x < 10)
+            {
+                return true;
+            }
+            int revInt = x;
+            int rem = 0;
+            int res = 0;
+            while (revInt >= 1)
+            {
+                rem = revInt % 10;
+                res = res * 10 + rem;
 
+                revInt /= 10;
+            }
+
+            return res == x;
+        }
         public static TreeNode InvertTree(TreeNode root)
         {
             if (root == null)
@@ -51,6 +73,8 @@ namespace ConsoleApp1
             return root;
 
         }
+
+       
 
         public static TreeNode MergeTrees(TreeNode root1, TreeNode root2)
          {
