@@ -31,23 +31,19 @@ namespace ConsoleApp1
             //MergeTrees(t1 , t2);    
 
             //var x = t;
-            IsPalindrome(1234);
+            var x = IsPalindrome(1534236469);
             Console.ReadKey();
         }
 
-        public static bool IsPalindrome(int x)
+        public static int IsPalindrome(int x)
         {
-            if (x < 0 || x % 10 == 0)
-            {
-                return false;
-            }
-            if (x > 0 && x < 10)
-            {
-                return true;
-            }
-            int revInt = x;
+           
+            bool neg = x < 0;
+            
+            x = Math.Abs(x);
             int rem = 0;
-            int res = 0;
+            double res = 0;
+            int revInt = x;
             while (revInt >= 1)
             {
                 rem = revInt % 10;
@@ -55,8 +51,13 @@ namespace ConsoleApp1
 
                 revInt /= 10;
             }
+            res = neg ? res * -1 : res;
+            if (res >= int.MaxValue || res <= int.MinValue)
+            {
+                return 0;
+            }
 
-            return res == x;
+            return (int) res;
         }
         public static TreeNode InvertTree(TreeNode root)
         {
