@@ -1,146 +1,100 @@
-﻿using LanguageExt;
-using LanguageExt.Pretty;
-using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
+﻿using System;
 using System.Linq;
 using System.Numerics;
+using ConsoleApp1.Service;
+using ConsoleApp1.Model;
+using System.Threading.Tasks;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace ConsoleApp1
 {
-
+    
 
     class Program
     {
+        record Person(string FirstName, string LastName);
+        record Pet(string Name, Person Owner);
+        record Employee(string FirstName, string LastName, int EmployeeID);
+        record Cat(string Name, Person Owner) : Pet(Name, Owner);
+        record Dog(string Name, Person Owner) : Pet(Name, Owner);
         static void Main(string[] args)
         {
 
-            var list1 = new int?[] { 4, null, 2, 7 ,null , 1 , 3 , null , 6 , 9};
-            //var list2 = new int?[] { 1, null, 3, 2, null, 5 };
+            Person magnus = new(FirstName: "Magnus", LastName: "Hedlund");
+            Person terry = new("Terry", "Adams");
+            Person charlotte = new("Charlotte", "Weiss");
+            Person arlene = new("Arlene", "Huff");
+            Person rui = new("Rui", "Raposo");
 
-            //var root = InitializeNaryTree(list);
-            //var res = Postorder(root);
-            //var t1 = InitializeTree(list1);
-            //var t2 = InitializeTree(list2);
-            //var t2 = InitializeTree(list1);
+            List<Person> people = new() { magnus, terry, charlotte, arlene, rui };
 
-            //InvertTree(t2); 
+            List<Pet> pets = new()
+            {
+                new(Name: "Barley", Owner: terry),
+                new("Boots", terry),
+                new("Whiskers", charlotte),
+                new("Blue Moon", rui),
+                new("Daisy", magnus),
+            };
 
-            //MergeTrees(t1 , t2);    
+            // Create a collection of person-pet pairs. Each element in the collection
+            //// is an anonymous type containing both the person's name and their pet's name.
+            //var query =
+            //    from person in people
+            //    join pet in pets on person equals pet.Owner
+            //    select new
+            //    {
+            //        OwnerName = person.FirstName,
+            //        PetName = pet.Name
+            //    };
 
-            //var x = t;
-            var x = IsPalindrome(1534236469);
-            Console.ReadKey();
-        }
+            //var result = "";
+            //foreach (var ownerAndPet in query)
+            //{
+            //    result += $"\"{ownerAndPet.PetName}\" is owned by {ownerAndPet.OwnerName}\r\n";
+            //}
+            //Console.Write(result);
 
-        public static int IsPalindrome(int x)
-        {
-           
-            bool neg = x < 0;
+
+
+            //var petIsOwnedBy = from p in pets
+            //                   join
+            //                    person in people
+            //                    on p.Owner equals person
+            //                   select new { pet = p, person = person };
+            var petIsOwnedBy =
+                people.Join(
+                    pets,
+                    person => person,
+                    pet => pet.Owner,
+                    (person, pet) => new { pet = pet, person = person});
+
+            foreach (var pet in petIsOwnedBy)
+            {
+                Console.WriteLine($"pet {pet.pet.Name} is owned by {pet.person.FirstName} , {pet.person.LastName}");
+            }
             
-            x = Math.Abs(x);
-            int rem = 0;
-            double res = 0;
-            int revInt = x;
-            while (revInt >= 1)
-            {
-                rem = revInt % 10;
-                res = res * 10 + rem;
 
-                revInt /= 10;
-            }
-            res = neg ? res * -1 : res;
-            if (res >= int.MaxValue || res <= int.MinValue)
-            {
-                return 0;
-            }
+            /* Output:
+                 "Daisy" is owned by Magnus
+                 "Barley" is owned by Terry
+                 "Boots" is owned by Terry
+                 "Whiskers" is owned by Charlotte
+                 "Blue Moon" is owned by Rui
+            */
 
-            return (int) res;
-        }
-        public static TreeNode InvertTree(TreeNode root)
-        {
-            if (root == null)
-            {
-                return root;
-            }
-            
-            var left = InvertTree(root.left);   
-            var rig = InvertTree(root.right);
-            root.left = rig;
-            root.right = left;
-
-            return root;
 
         }
 
-       
 
-        public static TreeNode MergeTrees(TreeNode root1, TreeNode root2)
-         {
-            if (root1 == null)
-            {
-                return root2;
-            }
-            if (root2 == null)
-            {
-                return root1;
-            }
-            root1.val += root2.val;
-            root1.left = MergeTrees(root1.left, root2.left);
-            root1.right  = MergeTrees(root1.right   , root2.right);
 
-            return root1;
-
-        }
-        public class TreeNode
-        {
-            public int val;
-            public TreeNode left;
-            public TreeNode right;
-
-            public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
-            {
-                this.val = val;
-                this.left = left;
-                this.right = right;
-            }
-        }
-        static TreeNode InitializeTree(int? [] inputList)
-        {
-            if (inputList.Length == 0)
-            {
-                return null;
-            }
-
-            Queue<TreeNode> queue = new Queue<TreeNode>();
-            TreeNode root = new TreeNode(inputList[0].Value);
-            queue.Enqueue(root);
-
-            int i = 1;
-            while (queue.Count > 0 && i < inputList.Length)
-            {
-                TreeNode currentNode = queue.Dequeue();
-
-                if (inputList[i] != null)
-                {
-                    currentNode.left = new TreeNode(inputList[i].Value);
-                    queue.Enqueue(currentNode.left);
-                }
-
-                i++;
-
-                if (i < inputList.Length && inputList[i] != null)
-                {
-                    currentNode.right = new TreeNode(inputList[i].Value);
-                    queue.Enqueue(currentNode.right);
-                }
-
-                i++;
-            }
-
-            return root;
-        }
     }
-    }
+
+
+
+
+
+}
