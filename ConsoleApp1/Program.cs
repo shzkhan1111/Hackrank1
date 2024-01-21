@@ -15,67 +15,70 @@ namespace ConsoleApp1
 
     class Program
     {
-        record Employee(string FirstName, string LastName, int EmployeeID);
-        record Student(string FirstName, string LastName, int StudentID);
+        record Person(string FirstName, string LastName);
+        record Cat(string Name, Person Owner);
+        record Dog(string Name, Person Owner);
 
 
         static void Main(string[] args)
         {
-            List<Employee> employees = new List<Employee>()
-{
-    new("Terry", "Adams", 522459),
-    new("Charlotte", "Weiss", 204467),
-    new("Magnus", "Hedland", 866200),
-    new("Vernette", "Price", 437139)
-};
+            Person magnus = new("Magnus", "Hedlund");
+            Person terry = new("Terry", "Adams");
+            Person charlotte = new("Charlotte", "Weiss");
+            Person arlene = new("Arlene", "Huff");
+            Person rui = new("Rui", "Raposo");
+            Person phyllis = new("Phyllis", "Harris");
 
-            List<Student> students = new List<Student>()
-{
-    new("Vernette", "Price", 9562),
-    new("Terry", "Earls", 9870),
-    new("Terry", "Adams", 9913)
-};
-
-
-            var compositeKeyJoinLinq = from e in employees
-                                       join s in students
-                                       on new
-                                       {
-                                           e.FirstName,
-                                           e.LastName
-                                       }
-                                       equals
-                                       new
-                                       {
-                                           s.FirstName,
-                                           s.LastName
-                                       }
-
-                                       select $"{e.FirstName} {e.LastName}";
-
-            foreach (var x in compositeKeyJoinLinq)
+            List<Person> people = new() { magnus, terry, charlotte, arlene, rui, phyllis };
+            List<Cat> cats = new()
             {
-                Console.WriteLine(x);
-            }
-            //lambda 
+                new("Barley", terry),
+                new("Boots", terry),
+                new("Whiskers", charlotte),
+                new("Blue Moon", rui),
+                new("Daisy", magnus),
+            };
 
-            var query = employees.Join(
-                         students,//ordder same 
-                         employee => new { FirstName = employee.FirstName, LastName = employee.LastName },
-                         student => new { FirstName = student.FirstName, student.LastName },
-                         (employee, student) => $"{employee.FirstName} {employee.LastName}"
-                     );
-                foreach (var x in query)
+            List<Dog> dogs = new()
             {
-                Console.WriteLine(x);
+                new("Four Wheel Drive", phyllis),
+                new("Duke", magnus),
+                new("Denim", terry),
+                new("Wiley", charlotte),
+                new("Snoopy", rui),
+                new("Snickers", arlene),
+            };
+
+
+            var multiQuery = from p in people
+                             join c in cats
+                             on p equals c.Owner
+
+                             join d in dogs on
+                             new
+                             {
+                                 Owner = c.Owner,
+                                 Name = c.Name[..1]
+                             }
+                             equals
+                             new
+                             {
+                                 Owner = d.Owner,
+                                 Name = d.Name[..1]
+                             }
+                             select new
+                             {
+                                 CatName = c.Name,
+                                 DogName = d.Name
+                             }
+                        ;
+            foreach (var s in multiQuery)
+            {
+                Console.WriteLine($"Catname = {s.CatName} and Dog name is {s.DogName}");
             }
-
-
-
-
-
 
         }
+
 
 
 
