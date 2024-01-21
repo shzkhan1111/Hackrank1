@@ -50,32 +50,48 @@ namespace ConsoleApp1
             };
 
 
-            var multiQuery = from p in people
-                             join c in cats
-                             on p equals c.Owner
+            var query = people.Join(cats,
+                (p => p),
+                (c => c.Owner),
+                (p, c) => new { p, c }
+                )
+                .Join(dogs,
+                catOwner => new { Owner = catOwner.p, FirstLetterName = catOwner.c.Name[..1] },
+                d => new { Owner = d.Owner, FirstLetterName = d.c.Name[..1] },
+                (catowner, D) => new { co = catowner, d = D }
 
-                             join d in dogs on
-                             new
-                             {
-                                 Owner = c.Owner,
-                                 Name = c.Name[..1]
-                             }
-                             equals
-                             new
-                             {
-                                 Owner = d.Owner,
-                                 Name = d.Name[..1]
-                             }
-                             select new
-                             {
-                                 CatName = c.Name,
-                                 DogName = d.Name
-                             }
-                        ;
-            foreach (var s in multiQuery)
+                )
+                ;
+            foreach (var x in query)
             {
-                Console.WriteLine($"Catname = {s.CatName} and Dog name is {s.DogName}");
+                Console.WriteLine($"{x.co.p.Name} : {x.co.c.Name} : {x.co.c.Name}");
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //  var query = people.Join(cats,
+            //person => person,
+            //cat => cat.Owner,
+            //(person, cat) => new { person, cat })
+            //  .Join(dogs,
+            //commonOwner => new { Owner = commonOwner.person, Letter = commonOwner.cat.Name[..1] },
+            //dog => new { dog.Owner, Letter = dog.Name[..1] },
+            //(commonOwner, dog) => new { CatName = commonOwner.cat.Name, DogName = dog.Name });
+            //  ;
+
+
+
+
 
         }
 
