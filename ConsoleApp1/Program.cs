@@ -49,49 +49,24 @@ namespace ConsoleApp1
                 new("Snickers", arlene),
             };
 
+            var grpJoinQry = from p in people
+                             join cat in cats
+                             on p equals cat.Owner into pj
+                             select new
+                             {
+                                 A = pj,
+                                 //B = cat, // no Accessibility to cats
+                                 C = p //accessibility to P alone 
+                             };
 
-            var query = people.Join(cats,
-                (p => p),
-                (c => c.Owner),
-                (p, c) => new { p, c }
-                )
-                .Join(dogs,
-                catOwner => new { Owner = catOwner.p, FirstLetterName = catOwner.c.Name[..1] },
-                d => new { Owner = d.Owner, FirstLetterName = d.c.Name[..1] },
-                (catowner, D) => new { co = catowner, d = D }
-
-                )
-                ;
-            foreach (var x in query)
+            foreach (var x in grpJoinQry)
             {
-                Console.WriteLine($"{x.co.p.Name} : {x.co.c.Name} : {x.co.c.Name}");
+                Console.WriteLine($"P is {x.C.FirstName}");
+                foreach (var v in x.A)
+                {
+                    Console.WriteLine($"Values inside PJ are {v.Name} owner Name {v.Owner.FirstName}");
+                }
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //  var query = people.Join(cats,
-            //person => person,
-            //cat => cat.Owner,
-            //(person, cat) => new { person, cat })
-            //  .Join(dogs,
-            //commonOwner => new { Owner = commonOwner.person, Letter = commonOwner.cat.Name[..1] },
-            //dog => new { dog.Owner, Letter = dog.Name[..1] },
-            //(commonOwner, dog) => new { CatName = commonOwner.cat.Name, DogName = dog.Name });
-            //  ;
-
-
-
-
 
         }
 
