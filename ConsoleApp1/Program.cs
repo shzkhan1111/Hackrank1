@@ -49,7 +49,8 @@ namespace ConsoleApp1
                 new("Snickers", arlene),
             };
 
-            var grpJoinQry = from p in people
+            var grpJoinQry = 
+                from p in people
                              join cat in cats
                              on p equals cat.Owner into pj
                              select new
