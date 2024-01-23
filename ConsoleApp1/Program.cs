@@ -49,25 +49,33 @@ namespace ConsoleApp1
                 new("Snickers", arlene),
             };
 
-            var grpJoinQry = 
+            var grpJoinQry =
+                new("some_xml",
                 from p in people
-                             join cat in cats
-                             on p equals cat.Owner into pj
-                             select new
-                             {
-                                 A = pj,
-                                 //B = cat, // no Accessibility to cats
-                                 C = p //accessibility to P alone 
-                             };
+                join cat in cats
+                on p equals cat.Owner into pj
+                select new XElement("person",
+                        new XAttribute("FirstName", p.FirstName),
+                            new XAttribute("LastName", p.LastName),
+                            from subpet in pj
+                            select new XElement("Pet", subpet.Name)
+                ));
+            //select new
+            //{
+            //    A = pj,
+            //    //B = cat, // no Accessibility to cats
+            //    C = p //accessibility to P alone 
+            //};
+            Console.WriteLine(grpJoinQry);
 
-            foreach (var x in grpJoinQry)
-            {
-                Console.WriteLine($"P is {x.C.FirstName}");
-                foreach (var v in x.A)
-                {
-                    Console.WriteLine($"Values inside PJ are {v.Name} owner Name {v.Owner.FirstName}");
-                }
-            }
+            //foreach (var x in grpJoinQry)
+            //{
+            //    Console.WriteLine($"P is {x.C.FirstName}");
+            //    foreach (var v in x.A)
+            //    {
+            //        Console.WriteLine($"Values inside PJ are {v.Name} owner Name {v.Owner.FirstName}");
+            //    }
+            //}
 
         }
 
