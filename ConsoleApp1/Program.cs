@@ -15,67 +15,78 @@ namespace ConsoleApp1
 
     class Program
     {
-        record Person(string FirstName, string LastName);
-        record Cat(string Name, Person Owner);
-        record Dog(string Name, Person Owner);
+        class Order
+        {
+            public int OrderID { get; set; }
+            public int CustomerID { get; set; }
+            public string OrderDate { get; set; }
+        }
 
+        class Product
+        {
+            public int ProductID { get; set; }
+            public string ProductName { get; set; }
+            public decimal UnitPrice { get; set; }
+        }
+
+        class
+
+        OrderDetail
+        {
+            public
+
+        int OrderID
+            { get; set; }
+            public
+
+        int ProductID
+            { get; set; }
+            public
+
+        decimal UnitPrice
+            { get; set; }
+            public
+
+        int Quantity
+            { get; set; }
+        }
 
         static void Main(string[] args)
         {
-            Person magnus = new("Magnus", "Hedlund");
-            Person terry = new("Terry", "Adams");
-            Person charlotte = new("Charlotte", "Weiss");
-            Person arlene = new("Arlene", "Huff");
-            Person rui = new("Rui", "Raposo");
-            Person phyllis = new("Phyllis", "Harris");
+            List<Order> orders = new List<Order>()
+{
+    new Order() { OrderID = 1, CustomerID = 100, OrderDate = "2023-01-01" },
+    new Order() { OrderID = 2, CustomerID = 200, OrderDate = "2023-02-02" },
+    new Order() { OrderID = 3, CustomerID = 300, OrderDate = "2023-03-03" }
+};
 
-            List<Person> people = new() { magnus, terry, charlotte, arlene, rui, phyllis };
-            List<Cat> cats = new()
+            List<Product> products = new List<Product>()
+{
+    new Product() { ProductID = 1, ProductName = "Product A", UnitPrice = 10.00M },
+    new Product() { ProductID = 2, ProductName = "Product B", UnitPrice = 20.00M },
+    new Product() { ProductID = 3, ProductName = "Product C", UnitPrice = 30.00M }
+};
+
+            List<OrderDetail> orderDetails = new List<OrderDetail>()
+{
+    new OrderDetail() { OrderID = 1, ProductID = 1, UnitPrice = 9.50M, Quantity = 2 },
+    new OrderDetail() { OrderID = 1, ProductID = 2, UnitPrice = 19.80M, Quantity = 1 },
+    new OrderDetail() { OrderID = 2, ProductID = 2, UnitPrice = 20.50M, Quantity = 3 },
+    new OrderDetail() { OrderID = 3, ProductID = 3, UnitPrice = 29.90M, Quantity = 5 }
+};
+            var query = from o in orders
+                        from p in products
+                        join d in orderDetails
+                            on new { o.OrderID, p.ProductID } equals new { d.OrderID, d.ProductID } into details
+                        from d in details
+                        select new { o.OrderID, p.ProductID, d.UnitPrice };
+
+            // Execute the query and process the results
+            foreach (var item in query)
             {
-                new("Barley", terry),
-                new("Boots", terry),
-                new("Whiskers", charlotte),
-                new("Blue Moon", rui),
-                new("Daisy", magnus),
-            };
+                Console.WriteLine($"OrderID: {item.OrderID}, ProductID: {item.ProductID}, UnitPrice: {item.UnitPrice}");
+            }
 
-            List<Dog> dogs = new()
-            {
-                new("Four Wheel Drive", phyllis),
-                new("Duke", magnus),
-                new("Denim", terry),
-                new("Wiley", charlotte),
-                new("Snoopy", rui),
-                new("Snickers", arlene),
-            };
-
-            var grpJoinQry =
-                new("some_xml",
-                from p in people
-                join cat in cats
-                on p equals cat.Owner into pj
-                select new XElement("person",
-                        new XAttribute("FirstName", p.FirstName),
-                            new XAttribute("LastName", p.LastName),
-                            from subpet in pj
-                            select new XElement("Pet", subpet.Name)
-                ));
-            //select new
-            //{
-            //    A = pj,
-            //    //B = cat, // no Accessibility to cats
-            //    C = p //accessibility to P alone 
-            //};
-            Console.WriteLine(grpJoinQry);
-
-            //foreach (var x in grpJoinQry)
-            //{
-            //    Console.WriteLine($"P is {x.C.FirstName}");
-            //    foreach (var v in x.A)
-            //    {
-            //        Console.WriteLine($"Values inside PJ are {v.Name} owner Name {v.Owner.FirstName}");
-            //    }
-            //}
 
         }
 
